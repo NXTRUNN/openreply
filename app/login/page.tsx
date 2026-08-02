@@ -41,7 +41,7 @@ export default async function LoginPage({
           <p className="text-muted text-sm leading-relaxed mt-2">
             {selectedTemplate
               ? `Sign in to use the ${selectedTemplate.title} template.`
-              : "Sign in by email, then connect your Instagram professional account."}
+              : "Private owner access. Sign in with the configured owner email."}
           </p>
         </div>
 
@@ -72,7 +72,7 @@ export default async function LoginPage({
                   htmlFor="email"
                   className="block text-sm font-medium text-foreground"
                 >
-                  Work email
+                  Owner email
                 </label>
                 <input
                   id="email"
@@ -80,7 +80,7 @@ export default async function LoginPage({
                   type="email"
                   required
                   autoComplete="email"
-                  placeholder="you@company.com"
+                  placeholder="owner@example.com"
                   className="w-full px-4 py-3 rounded bg-surface border border-border text-sm text-foreground placeholder:text-zinc-500 focus:border-accent/40 focus:outline-none transition-colors"
                 />
               </div>

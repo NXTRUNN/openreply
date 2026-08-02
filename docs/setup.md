@@ -88,6 +88,7 @@ Copy `.env.example` to `.env` for local work, or set these in Vercel and Railway
 | --- | --- |
 | `NEXTAUTH_URL` | Your public URL. Your Vercel domain in production, your tunnel URL locally. |
 | `NEXTAUTH_SECRET` | Random secret. `openssl rand -base64 32` |
+| `OWNER_EMAIL` | The only email address permitted to request a login link. Missing or non-matching values fail closed. |
 | `CRON_SECRET` | Random secret protecting the token-refresh cron. |
 | `ENCRYPTION_KEY` | 32-byte hex. `openssl rand -hex 32`. Encrypts Instagram tokens. Identical across web and worker. |
 | `DATABASE_URL` | PostgreSQL connection string. Public Railway URL on Vercel; internal on the worker. |
@@ -316,5 +317,6 @@ Meta scrutinizes automated-DM apps and often rejects the first submission, so bu
 ## Security notes
 
 - `.env` is gitignored. Keep it that way.
+- Login links are sent only when the submitted address exactly matches `OWNER_EMAIL` after trimming and case folding. Non-canonical Unicode lookalikes are rejected. Keep this variable server-side.
 - Rotate any secret that has been pasted anywhere it could be logged, including a chat with an AI assistant.
 - Instagram tokens are encrypted at rest with `ENCRYPTION_KEY`. Losing or changing it means every connected account has to reconnect.
