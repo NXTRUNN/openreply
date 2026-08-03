@@ -1,7 +1,6 @@
 FROM node:22-bookworm-slim
 
-ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 WORKDIR /app
 
@@ -15,6 +14,8 @@ RUN npm ci
 COPY . .
 RUN npm run build \
     && chown -R node:node /app
+
+ENV NODE_ENV=production
 
 USER node
 
