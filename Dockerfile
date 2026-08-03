@@ -13,7 +13,8 @@ RUN npm ci
 
 COPY . .
 RUN npm run build \
-    && chown -R node:node /app
+    && mkdir -p .next/cache \
+    && chown -R node:node .next/cache
 
 ENV NODE_ENV=production
 
