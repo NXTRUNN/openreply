@@ -1,0 +1,45 @@
+services:
+  openreply-web:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+    image: nxtrunn/openreply:${OPENREPLY_IMAGE_TAG:-local}
+    env_file:
+      - .env.production
+    command: ["npm", "start"]
+    restart: unless-stopped
+    init: true
+    ports:
+      - "127.0.0.1:4010:3000"
+    networks:
+      - postiz-private
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/health').then(r=>{if(r.status!==200&&r.status!==503)process.exit(1)}).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  openreply-worker:
+    image: nxtrunn/openreply:${OPENREPLY_IMAGE_TAG:-local}
+    env_file:
+      - .env.production
+    command: ["npm", "run", "worker"]
+    restart: unless-stopped
+    init: true
+    networks:
+      - postiz-private
+    depends_on:
+      openreply-web:
+        condition: service_started
+
+networks:
+  postiz-private:
+    external: true
+    name: postiz_postiz-network
