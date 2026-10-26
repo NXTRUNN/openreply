@@ -7,7 +7,8 @@ import {
 } from "crypto";
 import { getEncryptionKeyHex, requireEnv } from "@/lib/env";
 
-const INSTAGRAM_OAUTH_URL = "https://api.instagram.com/oauth/authorize";
+// Use the professional Instagram login window, rather than the legacy API host.
+const INSTAGRAM_OAUTH_URL = "https://www.instagram.com/oauth/authorize";
 const INSTAGRAM_TOKEN_URL = "https://api.instagram.com/oauth/access_token";
 const ALGORITHM = "aes-256-gcm";
 const IV_LENGTH = 16;
@@ -76,6 +77,8 @@ export function getAuthorizationUrl(redirectUri: string, state: string): string 
     scope:
       "instagram_business_basic,instagram_business_manage_messages,instagram_business_manage_comments,instagram_business_manage_insights",
     response_type: "code",
+    // Keep the reconnect flow on Instagram login rather than the Facebook alternative.
+    enable_fb_login: "0",
     state,
   });
 
