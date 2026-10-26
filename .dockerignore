@@ -7,3 +7,8 @@ node_modules
 !.env.example
 coverage
 npm-debug.log*
+
+# Exclude secrets in nested deployment folders as well as the repo root.
+**/.env
+**/.env.*
+!**/.env.example

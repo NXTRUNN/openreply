@@ -46,3 +46,17 @@ docker compose --project-directory deploy/postiz-server \
 
 After both processes are running, `/api/health` must return `status: ok` and a
 healthy worker heartbeat.
+
+## Daily Instagram token renewal
+
+The schedules in `vercel.json` do not execute in this Docker deployment. Install
+`deploy/postiz-server/refresh-tokens.sh` as a root-owned executable at
+`/usr/local/bin/openreply-refresh-tokens`, and run it daily at 05:00 UTC from
+`/etc/cron.d/openreply-token-refresh`. Use `flock` to prevent overlapping runs,
+and set `MAILTO=""` if output is written to a local log.
+
+The helper calls the existing authenticated maintenance route over loopback
+inside the web container. It reads the existing cron secret inside that same
+container, logs counts only, and does not send messages or create campaigns.
+Expired grants still need the account owner to reconnect; daily renewal keeps
+new valid grants refreshed before their expiry window.
