@@ -35,6 +35,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Client credential guard regression tests
+        run: npm run test:client-secrets
+
       - name: Run tests
         run: npm test
 
